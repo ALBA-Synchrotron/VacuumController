@@ -1,0 +1,69 @@
+File freezed on December 2008, use Trac instead
+****************************************************
+	VacuumController Device Server
+****************************************************
+
+2008/July/14
+---------------------------------------
+Refactoring of Status in VG,VGCT,DUAL,IP devices
+Added On/Off and configuration commands to DUAL and MKS
+
+2008/April/21
+---------------------------------------
+Solved bug, If the serial device is not working the controller server crashes. The exception is now catched.
+
+2008/March/6
+---------------------------------------
+All the classes for gauge controllers enabled (MKS,TPG,Maxi,Axtran,Leybold)
+Communication statistics, logging and exceptionwrapping only for MKSGaugeController
+MKSGaugeController switches between 485/422 and 232 using a property.
+MKSGct and VarianDUAL pending of modification to introduce a safety interval between 422 communications.
+
+2007/December/12
+---------------------------------------
+Overview of devices installed:
+
+ws/vacuum/MKSGauge01-1: rocket01-01 (232)
+ws/vacuum/MKSGauge01-2: rocket01-03 (232)
+
+ws/vacuum/MaxiGauge-01: rocket01-09 (232, port used previously by ws/vacuum/MidiVac)
+ws/test/testdual: rocket01-02 MOVED!!!
+ws/vacuum/DUAL01: rocket02-05 (422), new location
+
+ws/vacuum/tpg300-01: rocket02-10 (422)
+ws/vacuum/leybold: rocket01-?
+
+2007/November/7
+---------------------------------------
+The PfeifferGaugeController is added, the SerialVacuumDevice has been modified to allow ACK/NACK flow management.
+
+2007/October/x
+---------------------------------------
+A first prototype for LOCOSplitter device server is added
+
+PENDING: It should be verified the polling buffer writing/reading!!!!
+
+2007/September/21
+---------------------------------------
+The structure of the sources has been modified to allow Pogo documentation for each of the classes.
+For that reason now each class is placed in an independent directory.
+
+2007/September/19
+---------------------------------------
+CHANGES BETWEEN THE LAST RELEASE AND THE PREVIOUS.
+
+SerialVacuumDevice Class
+	Added the setPolledComm command
+		it allows to manage commands/attribs polled by Tango
+	Modified the updateHW command
+		to manage polled attributes
+	Modified serialComm
+		Different modifications to improve the speed of the communications. (Not really satisfactory)
+VarianDUAL Class
+	Now it simply works, with polled Attributes
+
+12th September 2007
+----------------------------------------------------
+Modifications has been added in the updateHW() and serialComm() methods
+of the class VarianDUAL trying to increase the speed of the reading of current.
+The maximum frequency achieved is 1/60ms

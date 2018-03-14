@@ -1,0 +1,145 @@
+@TODO: interlock/protection values management
+
+4.5 August 2016
+-------------------------
+
+Solved bug in PseudoDev that ignored readings with controller interlocked (FAULT)
+Enabled Force* properties in VarianDUAL to accept booleans as well as strings
+
+4.4 Feb 2016
+-------------------------
+Solved bugs with exceptions at startup of devices
+
+4.3 May 2015
+-------------------------
+VarianDUAL: Added BlackBox buffer to log last communications from the serial line.
+
+CombinedGaugeDS: Solved memory leak.
+
+
+4.2 January 2014
+-------------------------
+SerialVacuumDevice: DevSerWriteString replaced by DevSerWriteChar to avoid memleaks in PyTango8
+VacuumController: DDebug and SerialC++ classes added to VacuumController server
+DUAL/MKSGaugeController: Enabled formula evaluation in StartSequence property and WarmUp command
+
+4.1 October 2014
+-------------------------
+Bug solved in MVC Controller
+
+4.0 August 2014
+---------------------------
+Devices refactored for Sourceforge
+Loading classes only when used
+Bugs solved related to use of Tango_stream logging
+PfeifferGaugeController replaces TPG/Maxi devices
+
+VERSION = 3.13 March 2014
+---------------------------
+PseudoDev: event_received uses parse_tango_model() function instead of parsing names manually 
+Added VERSION variable parsing from CHANGES file
+VacuumGauge capable of parsing both array index and attribute names
+PfeifferGaugeController updated (Marc Rosanes)
+
+August 2013
+---------------------------
+PseudoDev: #StateMachine == UNKNOWN mean that an unparsable value is received, so it is considered as an error and Errors count is checked before switching state
+IonPump/VacuumGauge: added PollingCycle property
+PfeifferGaugeController: added InvalidChannel exception
+
+
+April 2013, bliss 3.11
+---------------------------
+Leybold,MVC and Pfeiffer gauges updated
+r11971 | srubio | 2013 04 16 12:00:08 +0200 (Tue, 16 Apr 2013) | 7 lines
+Better parsing of 2 channels in TPG261
+Solved bug assigning channel.
+Last communication from buffer added to Status
+Added a limit between readings to avoid BufferEmpty exceptions
+Solved bug in thread start
+Adapted to use Tango loggers
+Added TPG261 communications by Marc Rosanes
+Added state machine for Model property
+Pfeiffer and Leybold gauges enabled
+
+
+February 2013, bliss 3.10
+---------------------------
+
+Solved Bugs in MKS/Gauge states when controller has setup error.
+Solving bugs in PseudoDev/VacuumGauge/IonPump
+PseudoDev.Status(): Added much more detail about errors
+Parsing of error messages improved
+PseudoDevs: added UseEvents property
+
+
+July 2012
+-------------------------
+All State Machine methods refactored
+Ion Pump config bugs solved
+Added attributes to manage setpoints
+Added quality management for out of range values (instead of not-allowance)
+Not compatible with Tango>3.3 ; to be patched in next releases
+MVC3 class added
+Midivac class added (back)
+SVD: Using SortedLists to preserve the order of write commands.
+Added setPolledNext method to hurry read commans when needed.
+IPCT: Limited pause between commands to 100ms minimum.
+MKS: only protect/high problems will cause ALARM, not missreadings or off.
+
+
+August 2011
+------------------------
+
+DUAL:
+Added ForceLocal property to do a better management of serial/local switching
+Removed overhead in communications.
+VacuumGauge and IonPump unified using the new common.PseudoDev class
+SerialVacuumDevice uses now period as the full refresh time (for the whole reading cycle).
+
+DUAL update bug solved: Serial communications thread patched to restart every reading cycle from the last command read instead of the first.
+
+
+July 2011
+------------------------
+MKS:
+Added On,Off commands.
+DefaultStatus will manage On() and state machine
+Several bugs solved
+Refresh added as device property
+Updated comments
+Added __del__ method to MKSGaugeController
+
+DUAL:
+On() now uses DefaultStatus property
+Forcing LOCAL mode after every command
+
+GAUGE:
+State machine improved
+
+Bliss 3.0, 18 October 2010
+---------------------------
+VacuumController.py:
+ * class loading order improved
+MKSgaugeController/VacuumGauge:
+ * Modified to connect devices within the same server using fandango.device.Dev4Tango methods.
+
+Bliss 2.9, 13th October 2010
+----------------------------
+
+VacuumController: 
+SplitterBox imported if available
+
+MultiGauge: 
+Added protocol errors and pump types
+
+VarianDUAL: 
+Command polling improved.
+IonPumpsConfig, IonPumpTypes and CurrentSetPoints attributes added.
+SendCommand improved.
+
+MKSGaugeController:
+Command polling improved
+Solved bug in pressure parsing
+Added new aliases in channel commands
+
