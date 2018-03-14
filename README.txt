@@ -26,7 +26,7 @@
 # Other Dependencies
 #
 # https://svn.code.sf.net/p/tango-ds/code/DeviceClasses/Communication/SerialLine
-# https://svn.code.sf.net/p/tango-cs/code/share/fandango
+# https://github.com/tango-controls/fandango
 
 
 ##########################################################################
