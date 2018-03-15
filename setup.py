@@ -59,7 +59,7 @@ package_data = {'': [
 scripts = [
   #DS,
   #'./bin/'+DS,
-  './scripts/VacuumController',
+  #'./scripts/VacuumController',
   #'./scripts/MVC3GaugeController',
   #'./scripts/PfeifferGaugeController',
   #'./scripts/VacuumGauge',
@@ -68,9 +68,9 @@ scripts = [
 
 ## This option relays on DS.py having a main() method
 entry_points = {
-        #'console_scripts': [
-            #'%s = %s.%s:main'%(DS,DS,DS),
-        #],
+        'console_scripts': [
+            '%s = %s.%s:main'%(DS,DS,DS),
+        ],
 }
 
 
