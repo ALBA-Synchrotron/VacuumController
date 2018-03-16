@@ -50,7 +50,8 @@ packages = package_dir.keys()
 
 ## Additional files, remember to edit MANIFEST.in to include them in sdist
 package_data = {'': [
-  #'VERSION',
+  'VERSION',
+  'CHANES',
   #'./tools/icon/*',
   #'./tools/*ui',
 ]}

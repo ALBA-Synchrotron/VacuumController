@@ -62,7 +62,7 @@ print '> ',__RELEASE__
 #    Vacuum Device Servers class main method
 #
 #==================================================================
-if __name__ == '__main__':
+def main():
     try:
         py = PyTango.PyUtil(sys.argv)
         #######################################################################
@@ -73,7 +73,7 @@ if __name__ == '__main__':
         k = 'MKSGaugeController'
         if not classes or k in classes:
             try:
-                from MKSGaugeController.MKSGaugeController import *
+                from MKSGaugeController import MKSGaugeController, MKSGaugeControllerClass
                 py.add_class(MKSGaugeControllerClass,MKSGaugeController,'MKSGaugeController')
                 print('%s class added'%k)
             except:
@@ -81,7 +81,7 @@ if __name__ == '__main__':
         k = 'MVC3GaugeController'
         if not classes or k in classes:
             try:
-                from MVC3GaugeController.MVC3GaugeController import *
+                from MVC3GaugeController import MVC3GaugeController, MVC3GaugeControllerClass
                 py.add_class(MVC3GaugeControllerClass,MVC3GaugeController)
                 print('%s class added'%k)
             except:
@@ -89,7 +89,7 @@ if __name__ == '__main__':
         k = 'PfeifferGaugeController'
         if not classes or k in classes:
             try:
-                from PfeifferGaugeController.PfeifferGaugeController import *
+                from PfeifferGaugeController import PfeifferGaugeController, PfeifferGaugeControllerClass
                 py.add_TgClass(PfeifferGaugeControllerClass,PfeifferGaugeController,'PfeifferGaugeController')
                 print('%s class added'%k)
             except:
@@ -97,7 +97,7 @@ if __name__ == '__main__':
         k = 'LeyboldGaugeController'
         if not classes or k in classes:
             try:
-                from LeyboldGaugeController.LeyboldGaugeController import *
+                from LeyboldGaugeController import LeyboldGaugeController, LeyboldGaugeControllerClass
                 py.add_TgClass(LeyboldGaugeControllerClass,LeyboldGaugeController,'LeyboldGaugeController')
                 print('%s class added'%k)
             except:
@@ -105,15 +105,15 @@ if __name__ == '__main__':
         k = 'AxtranGaugeController'
         if not classes or k in classes:
             try:
+                from AxtranGaugeController import AxtranGaugeController, AxtranGaugeControllerClass
                 py.add_TgClass(AxtranGaugeControllerClass,AxtranGaugeController,'AxtranGaugeController')
-                from AxtranGaugeController.AxtranGaugeController import *
                 print('%s class added'%k)
             except:
                 print('Unable to import %s Class: %s'%(k,traceback.format_exc()))
         k = 'VacuumGauge'
         if not classes or k in classes:
             try:
-                from VacuumGauge.VacuumGauge import *
+                from VacuumGauge import VacuumGauge, VacuumGaugeClass
                 py.add_class(VacuumGaugeClass,VacuumGauge,'VacuumGauge')
                 print('%s class added'%k)
             except:
@@ -125,7 +125,7 @@ if __name__ == '__main__':
         k = 'VarianDUAL'
         if not classes or k in classes:
             try:
-                from VarianDUAL.VarianDUAL import *
+                from VarianDUAL import VarianDUAL, VarianDUALClass
                 py.add_class(VarianDUALClass,VarianDUAL,'VarianDUAL')
                 print('%s class added'%k)
             except:
@@ -133,7 +133,7 @@ if __name__ == '__main__':
         k = 'MidiVac'
         if not classes or k in classes:
             try:
-                from MidiVac.MidiVac import *
+                from MidiVac import MidiVac, MidiVacClass
                 py.add_class(MidiVacClass,MidiVac,'MidiVac')
                 print('%s class added'%k)
             except:
@@ -149,7 +149,7 @@ if __name__ == '__main__':
         k = 'IonPump'
         if not classes or k in classes:
             try:
-                from IonPump.IonPump import *
+                from IonPump import IonPump, IonPumpClass
                 py.add_class(IonPumpClass,IonPump,'IonPump')
                 print('%s class added'%k)
             except:
@@ -183,3 +183,6 @@ if __name__ == '__main__':
     except Exception,e:
         print '-------> An unforeseen exception occured....',e
         traceback.print_exc()
+
+if __name__ == '__main__':
+    main()
