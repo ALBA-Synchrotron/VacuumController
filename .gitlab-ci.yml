@@ -3,7 +3,9 @@ variables:
   DOCKER_DRIVER: overlay2
   ARTIFACTS_DIR: "$CI_PROJECT_DIR/dist"
   # Set up variables for pushing the generated tags
-  DEPLOY_GIT_REPO: "git.cells.es/$CI_PROJECT_PATH.git"
+  # REPO_URL (set this up  in project->settings->CI/CD settings->Secret variables)
+  # e.g. git.cells.es
+  DEPLOY_GIT_REPO: "$REPO_URL/$CI_PROJECT_PATH.git"
   BOT_NAME: debpack
   # BOT_PASS (set this up  in project->settings->CI/CD settings->Secret variables)
   # ALBA HACK:
@@ -59,7 +61,7 @@ prepare_debrepo:
     - gbp dch --commit --commit-msg="Update changelog for %(version)s release [ci skip]" 
         --spawn-editor=never --debian-branch=debian/stretch --upstream-branch=upstream 
         --release  --distribution=stretch-backports --new-version=$UPVERSION-0~bpo9+0~alba+1 
-        --git-log='--first-parent' 
+        --git-log='--first-parent'
     - cat debian/changelog
   except:
     - tags
@@ -85,7 +87,7 @@ build_package_stretch:
     - git checkout debian/stretch
     - eatmydata apt-get build-dep -y .
     - DEB_BUILD_OPTIONS=nocheck gbp buildpackage --git-tag --git-debian-branch=debian/stretch 
-        --git-export-dir=${ARTIFACTS_DIR}/stretch -us -uc
+        --git-export-dir=${ARTIFACTS_DIR}/stretch --git-ignore-new -us -uc
   except:
     - tags
 
