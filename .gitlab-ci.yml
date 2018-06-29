@@ -11,7 +11,8 @@ variables:
   # ALBA HACK:
   GIT_SSL_NO_VERIFY: 'true'
   DEBFULLNAME: "CI Boot"
-  DEBEMAIL: "controls@cells.es"
+  # DEBEMAIL (set this up  in project->settings->CI/CD settings->Secret variables)
+  DEBEMAIL: "$DEBEMAIL"
 
 
 stages:
