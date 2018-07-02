@@ -134,7 +134,8 @@ upload_to_staging:
     - upload2aptly "aptly:$BOT_PASS" "deb9_staging" ${ARTIFACTS_DIR}/stretch/*.changes
   except:
     - tags
-
+  only:
+    - branches@ctpkg/VacuumController
 
 promote_to_production:
   image: dockerrg.cells.es/debpack-ci:latest
@@ -144,4 +145,6 @@ promote_to_production:
   when: manual
   except:
     - tags
+  only:
+    - branches@ctpkg/VacuumController
 
