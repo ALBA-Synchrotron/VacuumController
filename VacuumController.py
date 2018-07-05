@@ -73,7 +73,7 @@ def main():
         k = 'MKSGaugeController'
         if not classes or k in classes:
             try:
-                from MKSGaugeController import MKSGaugeController, MKSGaugeControllerClass
+                from MKSGaugeController.MKSGaugeController import MKSGaugeController, MKSGaugeControllerClass
                 py.add_class(MKSGaugeControllerClass,MKSGaugeController,'MKSGaugeController')
                 print('%s class added'%k)
             except:
