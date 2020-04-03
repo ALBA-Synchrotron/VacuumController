@@ -32,7 +32,10 @@ test:
   requires:
     - fandango
     - pytango
-  import: {{data.get('packages')}}
+  imports:
+    {% for pack in data['packages'] %}
+    - {{pack}}
+    {% endfor %}
 
 about:
   home: {{ data.get('url')}}
