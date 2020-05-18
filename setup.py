@@ -81,9 +81,8 @@ setup(
     license=license,
     description=description,
     install_requires=install_requires,    
-    packages = packages or find_packages(),
-    package_dir= package_dir,
-    entry_points=entry_points,    
+    packages =find_packages(),
+    entry_points=entry_points,
     scripts = scripts,
     include_package_data = True,
     package_data = package_data    
