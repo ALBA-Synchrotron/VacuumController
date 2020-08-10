@@ -118,10 +118,14 @@ class SerialVacuumDevice(TangoDev,Logger):
     The arguments are:
     
         :param tangoDevice: serial device to communicate with
-        :param period: time for refreshing all read commands, it will fix the minimum time between two serial communications
+        :param period: time for refreshing all read commands, divided 
+			by the number of pollings it will fix the minimum time 
+			between two serial communications
         :param threadname: name of the thread
-        :param wait: maximum time that the device server will wait for an answer from the serial line
-        :param retries: number of times that read commands are retried if no answer is received
+        :param wait: maximum time that the device server will wait 
+			for an answer from the serial line
+        :param retries: number of times that read commands are retried 
+			if no answer is received
         :param log: logging level
     """
     def __init__(self,tangoDevice,period=.1,threadname=None,wait=2, retries=3,log='DEBUG',blackbox=0):
@@ -138,10 +142,12 @@ class SerialVacuumDevice(TangoDev,Logger):
         self.kwargs = {'nada':0} #Dictionary
 
         self.blankChars = set([ '\n', '\r', ' ', '>' ])
-        ## period (seconds): It will be the minimum time between two serial line readings
-        self.period = max(period,.050)
-        ## waitTime(seconds): It will be the maximum time that the device server will wait for an answer from the serial line.        
-        self.waitTime = max(wait,.050)
+        ## period (seconds): It will be divided between the number 
+        # of pollings to determine the pause between readings
+        self.period = max(period,.020)
+        ## waitTime(seconds): It will be the maximum time that the 
+        # device server will wait for an answer from the serial line.        
+        self.waitTime = max(wait,.020)
         self.retries = retries
         
         self.lasttime = 0 #Used to store the time of the last communication
@@ -149,6 +155,7 @@ class SerialVacuumDevice(TangoDev,Logger):
         self.lastsend = ''
         self.lasterror = ''
         self.lasterror_epoch = 0
+        self.maxreadtime = 0
         self.errors = -1
         self.error_rate = 0
         self.error_rate_epoch = time.time()
@@ -243,7 +250,9 @@ class SerialVacuumDevice(TangoDev,Logger):
             return result
         
     def setPolledComm(self,_key,_period):
-        """ srubio 9.2007: This command has been added to allow management of the hardware commandspolling through Tango polling properties
+        """ srubio 9.2007: This command has been added to allow 
+			management of the hardware commandspolling through Tango 
+			polling properties
         """
         if not _key in self.readList.keys():
             self.addComm(_key)
@@ -411,32 +420,60 @@ class SerialVacuumDevice(TangoDev,Logger):
         # This wait is divided in smaller periods
         # In each period is tested what has been received from the serial port
         # The wait will finish when after receiving some information there's silence again
-        result=''
-        if not hasattr(self,'_Dcache'): self._Dcache = {}
-        if emulation and commCode in self._Dcache: return self._Dcache[commCode]
-        if self.trace: print( 'In readComm(%s) Waiting %fs for answer ...'%(commCode,self.waitTime))
-        wtime = 0.0; result = ""; rec = ""; lastrec = ""; div=4.; before=time.time(); after=before+0.001
-        while wtime<self.waitTime and not (not len(rec) and len(lastrec.replace(commCode,'').replace('\r','').replace('\n',''))):
+        t0, result, retries = fandango.now(),'',0
+        if not hasattr(self,'_Dcache'): 
+			self._Dcache = {}
+        if emulation and commCode in self._Dcache: 
+			return self._Dcache[commCode]
+			
+        wtime = 0.0; result = ""; rec = ""; lastrec = ""; div=4.; 
+        before=time.time(); after=before+0.001
+        
+        while wtime<self.waitTime and not (not len(rec) \
+			and len(lastrec.replace(commCode,'').replace('\r','').replace('\n',''))):
+            
+            if self.trace and retries: 
+                print('In readComm(%s)(%d) Waiting %fs for answer ...'
+                    %(commCode,retries,self.waitTime))
+            retries += 1			
+            
             #The wait condition aborts after waitTime or nothing read after something different from \r or \n.
             #Between reads a pause of TimeWait/10.0 is performed.
             #I've tried to make smaller the time that the thread spends waiting for an answer ... more attempts to improve has been inefficient do to imprecission of the time.sleep method
+            
             last=before
             after=time.time()
             pause = self.waitTime/div - (after-before)
-            time.sleep(max(pause,0))
+            fandango.wait(max(pause,0)) #time.sleep(max(pause,0))
             before=time.time();
             lastrec=lastrec+rec
+            
             if self.getSerialClass() == 'PySerial':
                 nchars = self.dp.read_attribute('InputBuffer').value
                 rec = self.dp.command_inout("Read",nchars)
             else: #Class is 'Serial'
                 #rec = self.dp.command_inout("DevSerReadRaw")
                 rec = self.dp.command_inout("DevSerReadString",0)
+                
             rec.rstrip().lstrip()
-            if self.trace: self.debug( 'received('+str(wtime)+';'+str(after-last)+';'+str(len(lastrec.replace(commCode,'').replace('\r','').replace('\n','')))+';'+str(len(rec))+"): '"+rec.replace('\r','\\r').replace('\n','\\n')+"'")
+            
+            lrclean = lastrec.replace(commCode,'').replace('\r','').replace('\n','')
+            rrclean = rec.replace('\r','\\r').replace('\n','\\n')
+            if self.trace and rrclean: 
+                #self.debug
+                print( 'received('+str(wtime)+';'+str(after-last)+';'
+                    +str(len(lrclean))+';'+str(len(rec))+"): '" + rrclean+"'")
+					
             result += rec
             wtime += self.waitTime/div
+
         self._Dcache[commCode] = result
+        readtime = fandango.now()-t0
+        self.maxreadtime = max((self.maxreadtime,readtime))
+        if self.trace:
+            print('ReadComm(%s) = %s done in %f seconds (max = %f, + %f)' % 
+                (commCode,result.strip(),readtime,self.maxreadtime,fandango.now()-self.lasttime))
+
         return result
     
         
