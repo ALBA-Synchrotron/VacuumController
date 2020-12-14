@@ -267,7 +267,9 @@ class SerialVacuumDevice(TangoDev,Logger):
         if _key in self.pollingList:
             _period = self.pollingList[_key][0]
             self.setPolledComm(_key,_period)
-        else: self.warning('.setPolledNext(%s): key not in polled list!\n\t%s'%(_key,self.pollingList.keys()))
+        else: 
+            self.warning('.setPolledNext(%s): key not in polled list!\n\t%s'
+                           %(_key,self.pollingList.keys()))
         
     def start(self):
         if self.updateThread:
@@ -335,11 +337,13 @@ class SerialVacuumDevice(TangoDev,Logger):
                 #-----------------------------------------------------------------------
                 self._last_read = rd
                 if rd in self.pollingList.keys(): #When a period is specified for a Command this is readed only at this certain period, by default all the commands are readed continuously
-                    next = self.pollingList[rd][1]+self.pollingList[rd][0]
+                    nxt = self.pollingList[rd][1]+self.pollingList[rd][0]
                     now = time.time()
-                    if now<next: #If the time for the command to be read has not been reached the bucle jumps to the next command
+                    if now<nxt: #If the time for the command to be read has not been reached the bucle jumps to the next command
                         self.event.wait(pause/4.)
-                        if self.trace: self.debug('Command %s has %s polling, continue ...'%(rd,self.pollingList[rd][0]*1000))
+                        if self.trace: 
+                            self.debug('Command %s has %s polling, continue ...'
+                                       %(rd,self.pollingList[rd][0]*1000))
                         continue 
                     else: #If the time has been reached the list is updated and we proceed to read the serial port
                         self.pollingList[rd]=self.pollingList[rd][0],now #period,last_read
@@ -432,9 +436,9 @@ class SerialVacuumDevice(TangoDev,Logger):
         while wtime<self.waitTime and not (not len(rec) \
 			and len(lastrec.replace(commCode,'').replace('\r','').replace('\n',''))):
             
-            if self.trace and retries: 
-                print('In readComm(%s)(%d) Waiting %fs for answer ...'
-                    %(commCode,retries,self.waitTime))
+            #if self.trace and retries: 
+            #    print('In readComm(%s)(%d) Waiting %fs for answer ...'
+            #        %(commCode,retries,self.waitTime))
             retries += 1			
             
             #The wait condition aborts after waitTime or nothing read after something different from \r or \n.
