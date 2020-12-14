@@ -249,7 +249,7 @@ class SerialVacuumDevice(TangoDev,Logger):
         else:
             return result
         
-    def setPolledComm(self,_key,_period):
+    def setPolledComm(self,_key,_period,start_time=0.):
         """ srubio 9.2007: This command has been added to allow 
 			management of the hardware commandspolling through Tango 
 			polling properties
@@ -260,7 +260,7 @@ class SerialVacuumDevice(TangoDev,Logger):
             if _key in self.pollingList.keys():
                 self.pollingList.pop(_key)
         else:
-            self.pollingList[_key]=_period,0. #period,lastread
+            self.pollingList[_key]=_period,start_time #period,lastread
         return
         
     def setPolledNext(self,_key):
