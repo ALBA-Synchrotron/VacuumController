@@ -172,8 +172,8 @@ class SerialVacuumDevice(TangoDev,Logger):
         
         TangoDev.__init__(self,tangoDevice)
         self.call__init__(Logger,'SVD('+tangoDevice+')',format='%(levelname)-8s %(asctime)s %(name)s: %(message)s')
-        try: self.setLevel(log)
-        except: print 'Unable to set SerialVacuumDevice.LogLevel'
+        try: self.setLogLevel(log)
+        except: print('Unable to set SerialVacuumDevice.LogLevel')
         self.errors = 0
         
         if blackbox: 
@@ -339,7 +339,7 @@ class SerialVacuumDevice(TangoDev,Logger):
                     now = time.time()
                     if now<next: #If the time for the command to be read has not been reached the bucle jumps to the next command
                         self.event.wait(pause/4.)
-                        if self.trace: self.debug('Command %s has %s polling, continue ...'%(rd,self.pollingList[rd][0]*1000))
+                        #if self.trace: self.debug('Command %s has %s polling, continue ...'%(rd,self.pollingList[rd][0]*1000))
                         continue 
                     else: #If the time has been reached the list is updated and we proceed to read the serial port
                         self.pollingList[rd]=self.pollingList[rd][0],now #period,last_read
@@ -360,7 +360,7 @@ class SerialVacuumDevice(TangoDev,Logger):
                         else:
                             raise Exception,self.lasterror
                     except Exception,e:
-                        if (time.time()-self.lasterror_epoch)>10:
+                        if 1: #(time.time()-self.lasterror_epoch)>10:
                             self.error('updateHW(%s): Serial Line read access failed with exception!: %s'%(rd,'SVD' in str(e) and str(e) or traceback.format_exc()))
                         self.add_new_error('%s:SerialReadException:%s'%(rd,str(e)))
                         self.event.wait(pause/2.)
