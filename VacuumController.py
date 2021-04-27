@@ -82,7 +82,8 @@ def main():
         k = 'MVC3GaugeController'
         if not classes or k in classes:
             try:
-                from MVC3GaugeController import MVC3GaugeController, MVC3GaugeControllerClass
+                from MVC3GaugeController.MVC3GaugeController import \
+                    MVC3GaugeController, MVC3GaugeControllerClass
                 py.add_class(MVC3GaugeControllerClass,MVC3GaugeController)
                 print('%s class added'%k)
             except:
@@ -90,7 +91,8 @@ def main():
         k = 'PfeifferGaugeController'
         if not classes or k in classes:
             try:
-                from PfeifferGaugeController import PfeifferGaugeController, PfeifferGaugeControllerClass
+                from PfeifferGaugeController.PfeifferGaugeController import \
+                    PfeifferGaugeController, PfeifferGaugeControllerClass
                 py.add_TgClass(PfeifferGaugeControllerClass,PfeifferGaugeController,'PfeifferGaugeController')
                 print('%s class added'%k)
             except:
@@ -98,7 +100,8 @@ def main():
         k = 'LeyboldGaugeController'
         if not classes or k in classes:
             try:
-                from LeyboldGaugeController import LeyboldGaugeController, LeyboldGaugeControllerClass
+                from LeyboldGaugeController.LeyboldGaugeController import \
+                    LeyboldGaugeController, LeyboldGaugeControllerClass
                 py.add_TgClass(LeyboldGaugeControllerClass,LeyboldGaugeController,'LeyboldGaugeController')
                 print('%s class added'%k)
             except:
@@ -106,7 +109,8 @@ def main():
         k = 'AxtranGaugeController'
         if not classes or k in classes:
             try:
-                from AxtranGaugeController import AxtranGaugeController, AxtranGaugeControllerClass
+                from AxtranGaugeController.AxtranGaugeController import \
+                    AxtranGaugeController, AxtranGaugeControllerClass
                 py.add_TgClass(AxtranGaugeControllerClass,AxtranGaugeController,'AxtranGaugeController')
                 print('%s class added'%k)
             except:
