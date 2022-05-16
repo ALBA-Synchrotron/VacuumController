@@ -51,7 +51,7 @@ from PyTango import DevState
 
 try: import fandango
 except: import PyTango_utils as fandango
-import fandango.functional as fun
+import fandango.functional as fn
 import fandango.device as device
 from fandango.device import Dev4Tango,attr2str,fakeAttributeValue, fakeEventType
 from fandango import callbacks
@@ -137,8 +137,10 @@ class PseudoDev(Dev4Tango):
         self.last_event_received = time.time()
         #self.info,debug,error,warning should not be used here to avoid conflicts with tau.core logging
         log = self.plog
+        if type_ not in fakeEventType and fn.isString(type_):
+            type_ = fn.matchMap(fakeEventType.lookup,'change',default=0)
         log('info','*'*80)
-        log('info','In .event_received(%s(%s),%s,%s)'%(type(source).__name__,source,fakeEventType[type_],type(attr_value).__name__))
+        log('info','In .event_received(%s(%s),%s,%s)'%(type(source).__name__,source,type_,type(attr_value).__name__))
         if fakeEventType[type_] == 'Config': return
         source = fandango.tango.get_model_name(source)
         params = fandango.tango.parse_tango_model(source)
