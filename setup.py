@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # Always prefer setuptools over distutils
+
+import sys
 from setuptools import setup, find_packages
 
 DS = 'VacuumController'
+author = 'srubio@cells.es',
 description = '%s Tango Device Server'%DS
 version = open(DS+'/VERSION').read().strip()
 license = 'GPL-3.0'
@@ -38,9 +41,9 @@ install_requires = ['fandango','PyTango',]
 
 ## For setup.py located in root folder or submodules
 package_dir = {
-    DS: DS,    #'DS/tools': './tools',
+#    DS: DS,    #'DS/tools': './tools',
 }
-packages = package_dir.keys()
+packages = package_dir.keys() or find_packages()
 
 ## Additional files, remember to edit MANIFEST.in to include them in sdist
 package_data = {'': [
@@ -51,11 +54,8 @@ package_data = {'': [
 
 ## Launcher scripts
 scripts = [
-  #DS,
   './bin/'+DS,
   #'./scripts/VacuumController',
-  #'./scripts/MVC3GaugeController',
-  #'./scripts/PfeifferGaugeController',
   #'./scripts/VacuumGauge',
   #'./scripts/IonPump',
   ]
@@ -69,14 +69,16 @@ entry_points = {
 
 
 setup(
-    name = DS.lower(),
-    author = 'srubio',
-    author_email = 'controls-software@cells.es',
-    version = version,
-    license = license,
+    name = 'tangods-'+DS.lower(),
     description = description,
+    author = author,
+    author_email = author,
+    url = 'https://git.cells.es/controls/'+DS,
+    license = license,
+    version = version,
+    
     install_requires = install_requires,    
-    packages = packages or find_packages(),
+    packages = packages,
     package_dir = package_dir,
     entry_points = entry_points,    
     scripts = scripts,
